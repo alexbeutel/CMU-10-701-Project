@@ -38,16 +38,65 @@
 
 	\subsection*{Project Idea} % (fold)
 	\label{sub:Project Idea}
+
+	The goal of this project is to be able to create accurate 3D models of an
+	object from noisy video.  We hope to use a combination of techniques from
+	the machine learning and computer vision communities, and particularly work
+	closely with Professor Geoff Gordon.
+
+	In order to construct 3D scenes from noisy video will require a variety of
+	different methods.  From computer vision, we plan to use the SIFT
+	(scale-invariant feature transform) algorithm to detect features in video,
+	along with other methods by Carlo Tomasi et al. to track features.  We then
+	hope to combine these methods with a Hidden Markov Model and spectral
+	methods, based on recent work by Professor Gordon, to model the movement of
+	the points over time, deduce the motion of the camera, and determine the 3D
+	shapes of the scene.
+
 	
 	% subsection Project Idea (end)
 
 	\subsection*{Software} % (fold)
 	\label{sub:Software}
+
+	In meeting with Professor Gordon, he said he had code from his research
+	that performs some of the spectral methods used for his research and that
+	he was planning to open source it this week.  We plan to build on his
+	code-base, incorporating SIFT techniques and making more robust software
+	for 3D scene construction.  The direction of work here will depend on how
+	robust his code is to start.  If it is already very robust for 3D scene
+	construction, we hope to expand it further.
 	
 	% subsection Software (end)
 
-	\subsection*{Papers} % (fold)
-	\label{sub:Papers}
+	%\subsection*{Papers} % (fold)
+	%\label{sub:Papers}
+
+	\begin{thebibliography}{9}
+
+		\bibitem{boots}
+			Boots, Byron and Geoffrey J. Gordon.
+			\emph{An Online Spectral Learning Algorithm for Partially Observable Nonlinear Dynamical Systems}.
+			AAAI 2011.
+
+		\bibitem{lowe2004}
+			Lowe, David G.
+			\emph{Distinctive Image Features from Scale-Invariant Keypoints}.
+			International Journal of Computer Vision 60, 2. November 2004.
+
+		\bibitem{lowe1999}
+			Lowe, David G.
+			\emph{Object Recognition from Local Scale-Invariant Features}.
+			1999.
+
+		\bibitem{tomasi}
+			Tomasi, Carlo and Takeo Kanade.
+			\emph{Detection and Tracking of Point Features}.
+			Shape and Motion from Image Streams: A Factorization Model.
+			Technical Report CMU-CS-91-132,
+			April 1991.
+
+	\end{thebibliography}
 	
 	% subsection Papers (end)
 
@@ -58,7 +107,10 @@
 	Beutel.  As we are not yet sure of the amount of work for math,
 	programming, and writing we are not sure how to divide the project.  We
 	would both like to play an active role in all parts of the work, but will
-	split it up further as we get a better sense of the work required.
+	split it up further as we get a better sense of the work required.  As this
+	is a slightly different area of research than either of us have explored,
+	we both hope to learn greatly about computer vision and the applications of
+	machine learning, specifically Hidden Markov Models, in the field.
 
 	We also plan to meet with Professor Geoff Gordon regularly to discuss the
 	progress of the project, since it is closely related to his research.
