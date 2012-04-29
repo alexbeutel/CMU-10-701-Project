@@ -57,14 +57,19 @@ int main( int argc, const char* argv[] )
   sprintf(ffmt, "%%s%s%%s\0", fmt);
   
   tc = KLTCreateTrackingContext();
-  //tc->mindist = 20; // See klt.c for default values
-  //tc->window_width  = 25; 
-  //tc->window_height = 25;
+  tc->mindist = 15; // See klt.c for default values
+  tc->window_width  = 50; 
+  tc->window_height = 50;
+  tc->max_residue = 30;
+  tc->min_determinant = 0.001;
+  //tc->min_eigenvalue = 3;
+  //tc->borderx = 50;
+  //tc->bordery = 50;
   //tc->affine_window_width = 51;
   //tc->affine_window_height = 51;
-  //KLTChangeTCPyramid(tc, 15);
-  //KLTUpdateTCBorder(tc);
-  //KLTPrintTrackingContext(tc);
+  KLTChangeTCPyramid(tc, 15);
+  KLTUpdateTCBorder(tc);
+  KLTPrintTrackingContext(tc);
 
   fl = KLTCreateFeatureList(nFeatures);
   //ft = KLTCreateFeatureTable(nFrames, nFeatures);
