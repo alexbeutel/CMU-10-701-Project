@@ -5,16 +5,16 @@ if ~exist('Experiment', 'var') || isempty(Experiment)
 end
 switch (Experiment)
     case 1
-        W = cvuKltRead('image/hotel/hotel.seq%d.feat.txt', 0, 100);
+        W = cvuKltRead('hotel/images/pgm/hotel.seq%d.feat.txt', 0, 100);
         [R, S, t] = cvFactorization(W, 'orthographic');
     case 2
-        W = cvuKltRead('image/medusa/medusa%03dfeat.txt', 110, 179);
+        W = cvuKltRead('medusa/images/pgm/medusa%03dfeat.txt', 110, 179);
         [R, S, t] = cvFactorization(W, 'orthographic');
     case 3
-        W = cvuKltRead('image/hotel/hotel.seq%d.feat.txt', 0, 100);
+        W = cvuKltRead('hotel/images/pgm/hotel.seq%d.feat.txt', 0, 100);
         [R, S, t] = cvFactorization(W, 'paraperspective');
     case 4
-        W = cvuKltRead('image/medusa/medusa%03dfeat.txt', 110, 179);
+        W = cvuKltRead('medusa/images/pgm/medusa%03dfeat.txt', 110, 179);
         [R, S, t] = cvFactorization(W, 'paraperspective');
 %     case 5
 %         W = cvuKltRead('image/castle/castle.%d.feat.txt', 0, 27);

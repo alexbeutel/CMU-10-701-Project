@@ -4,7 +4,7 @@ function buffers = ConRaster(w,h,X,Y,scores)
 F = size(X,1);
 
 
-buffers = zeros(w,f,F);
+buffers = zeros(w,h,F);
 
 for frame = 1:F
 %     frame

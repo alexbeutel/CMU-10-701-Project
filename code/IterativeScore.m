@@ -10,8 +10,7 @@ stepSize = 5;
 windowSize = 3;
 
 %do some frame alignment
-F = stepSize*windowSize;
-numSteps = floor((lastFrame-startFrame)/stepSize);
+numsteps = floor((lastFrame-startFrame)/stepSize);
 
 I = imread(sprintf(img,startFrame));
 
@@ -27,50 +26,51 @@ diagIndexes = (1:windowSize) * (windowSize-1) + 1;
 
 % bootstrap and main phase
 for step = 1:(numsteps-windowSize),
-    partialRasters(diagIndexes) = clump(BuildRasters(),windowSize,stepSize); % assign to diagonal
+    
+    sf = (step-1) * stepSize + startFrame;
+    ef = sf + stepSize * windowSize - 1;
+    fn = strcat(sprintf(folder, step-1),part2);
+    
+    partialRasters(diagIndexes) = clump(BuildRasters(sf,ef,fn,N,m,w,h),windowSize,stepSize); % assign to diagonal
     numLoaded = min(step, windowSize);
-    ProcessColumn(partialRasters(windowSize-numLoaded+1:end,1)); %evaluate the left column    
+    ProcessColumn(partialRasters(windowSize-numLoaded+1:end,1),sf,img); %evaluate the left column    
     partialRasters(:,1:windowSize-1) = partialRasters(:,2:windowSize); %shift left
 end
 
 % write out the remaining registers
 for step = 1:windowSize-1
-    ProcessColumn(partialRasters(1:windowSize-step,step))
-end
-
-fprintf('Combine and post process\n')
-
-alphas = Combine(rasters);
-
-for i = 1:lastFrame-startFrame
-    a = alphas{i};
-    
-    I = imread(sprintf(img,i+startFrame));
-    
-    imwrite(I,concat(sprintf(img,i+startFrame),'.png'),'Alpha',a); 
+    sf = startFrame + (numsteps - windowSize + step)*stepSize;
+    ProcessColumn(partialRasters(1:windowSize-step,step),sf,img);
 end
 
 
 end
 
-function ProcessColumn(blockList, stepSize)
+
+
+function ProcessColumn(blockList, stepSize, startFrame,img)
     numWindows = length(blockList);
     for frame = 1:stepSize
         frameStack = zeros(w,h,numWindows);
         for window = 1:numWindows
             frameStack(window) = blockList{window}(:,:,frame);
         end
-        Combine(frameStack); % GOTTA DO SOMETHING WITH THIS
+        alpha = Combine(frameStack);
+        
+        I = imread(sprintf(img,frame+startFrame-1));
+        imwrite(I,concat(sprintf(img,frame+startFrame-1),'.png'),'Alpha',alpha); 
     end
 end
 
-function confrast = BuildRasters()
+function confrast = BuildRasters(sf,ef,fn,N,m,w,h)
     fprintf('Import Traces\n')
-    W = cvuKltRead(strcat(sprintf(folder, cnt),part2),sf,ef);
-    fprintf('GMM and Rasterize\n')
+    W = cvuKltRead(fn,sf,ef);
+    fprintf('GMM\n')
+    F = size(W,1)/2;
     X = W(1:F,:);
     Y = W(F+(1:F),:);
     logpdf = pickOutliers(X,Y,N,m);
+    fprintf('Rasterize\n')
     confrast = ConRaster(w,h,X,Y,logpdf);
 end
 
