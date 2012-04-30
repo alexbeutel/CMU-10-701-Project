@@ -4,17 +4,16 @@ prior = 0.5;
 
 n = length(X);
 
-xVals = (1:w)' * ones(1,h);
-yVals = ones(w,1) * (1:h);
-
-temp = zeros(w,h,n);
-for k = 1:n
-    temp(:,:,k) = (xVals - X(k)).^2 + (yVals - Y(k)).^2;
+buffer = zeros(w,h);
+for k = 1:n,
+    x = X(k);
+    y = Y(k);
+    xRange = max(1,x-20):min(w,x+20);
+    yRange = max(1,y-20):min(h,y+20);
+    buffer(xRange,yRange) = buffer(xRange,yRange) + 0.01;
 end
 
-[~,minDex] = min(temp,[],3);
-
-movementBuffer = score(minDex);
+movementBuffer = buffer;
 
 end
 
