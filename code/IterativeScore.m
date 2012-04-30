@@ -14,11 +14,13 @@ numsteps = floor((lastFrame-startFrame)/stepSize);
 
 I = imread(sprintf(img,startFrame));
 
+% size(I)
+
 w = size(I,2);
 h = size(I,1);
 
 N = 4;
-m = 100;
+m = 30;
 
 % initialize variables
 partialRasters = cell(windowSize,windowSize);
@@ -33,14 +35,14 @@ for step = 1:(numsteps-windowSize),
     
     partialRasters(diagIndexes) = clump(BuildRasters(sf,ef,fn,N,m,w,h),windowSize,stepSize); % assign to diagonal
     numLoaded = min(step, windowSize);
-    ProcessColumn(partialRasters(windowSize-numLoaded+1:end,1),sf,img); %evaluate the left column    
+    ProcessColumn(partialRasters(windowSize-numLoaded+1:end,1),stepSize,w,h,sf,img); %evaluate the left column    
     partialRasters(:,1:windowSize-1) = partialRasters(:,2:windowSize); %shift left
 end
 
 % write out the remaining registers
 for step = 1:windowSize-1
     sf = startFrame + (numsteps - windowSize + step)*stepSize;
-    ProcessColumn(partialRasters(1:windowSize-step,step),sf,img);
+    ProcessColumn(partialRasters(1:windowSize-step,step),stepSize,w,h,sf,img);
 end
 
 
@@ -48,17 +50,20 @@ end
 
 
 
-function ProcessColumn(blockList, stepSize, startFrame,img)
-    numWindows = length(blockList);
+function ProcessColumn(blockList, stepSize,w,h, startFrame,img)
+    numWindows = size(blockList,1)
     for frame = 1:stepSize
         frameStack = zeros(w,h,numWindows);
         for window = 1:numWindows
-            frameStack(window) = blockList{window}(:,:,frame);
+            frameStack(:,:,window) = blockList{window}(:,:,frame);
         end
         alpha = Combine(frameStack);
         
+        alpha = alpha / max(max(alpha));
         I = imread(sprintf(img,frame+startFrame-1));
-        imwrite(I,concat(sprintf(img,frame+startFrame-1),'.png'),'Alpha',alpha); 
+        I = I';
+        imwrite(I,strcat(sprintf(img,frame+startFrame-1),'.png'),'Alpha',alpha); 
+        imwrite(alpha,strcat(sprintf(img,frame+startFrame-1),'.alpha.png')); 
     end
 end
 
@@ -72,11 +77,12 @@ function confrast = BuildRasters(sf,ef,fn,N,m,w,h)
     logpdf = pickOutliers(X,Y,N,m);
     fprintf('Rasterize\n')
     confrast = ConRaster(w,h,X,Y,logpdf);
+    fprintf('Rasterize Done\n')
 end
 
 % A groups of size B
 function cellArray = clump(mat3,A,B)
-    cellArray = cell(A);
+    cellArray = cell(1,A);
     for group = 1 : A,
         cellArray{group} = mat3(:,:,((group-1)*B+1:group*B));
     end
