@@ -13,6 +13,7 @@ for i = 1:16
     hold on;
     
     plot(W(i, :), W(F+i, :), '.y');
+    set(gca, 'LooseInset', [0,0,0,0]);
 
 %     W(i+1-sFrame, :, :) = load(sprintf(format, i));
 end
