@@ -1,0 +1,7 @@
+function plotPoints(images, W)
+
+for i = sFrame:eFrame
+    W(i+1-sFrame, :, :) = load(sprintf(format, i));
+end
+
+end
