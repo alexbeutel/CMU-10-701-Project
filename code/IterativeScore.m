@@ -23,27 +23,24 @@ m = 100;
 % with a vector of rasters for each frame
 
 % i just want the fucking push command
-rasters = cell(1,lastFrame-startFrame);
+rasters = cell(1, windowSize * stepSize );
 
 
 cnt = 0;
-for i = startFrame:stepSize:(lastFrame-1)
+for i = startFrame:stepSize:lastFrame
     
     fprintf('Window %d at frame %d\n',cnt,i)
     
     sf = i;
-    ef = min(lastFrame, sf + stepSize * windowSize);
+    ef = min(lastFrame, sf + stepSize * windowSize - 1);
     
     
     fprintf('Import Traces\n')
     W = cvuKltRead(strcat(sprintf(folder, cnt),part2),sf,ef);
     cnt = cnt+1;
 
-%     scoreAndPlot2(sprintf(img,sf), W, N, m);
-
     
     fprintf('GMM\n')
-    % Score
     F = size(W, 1) / 2;
     P = size(W, 2);
 
@@ -54,9 +51,7 @@ for i = startFrame:stepSize:(lastFrame-1)
     
     fprintf('ConRast\n')
     confrast = ConRaster(w,h,X,Y,logpdf);
-
-%     s = struct('sf', sf, 'X', X, 'Y', Y, 'scores', logpdf, 'raster', confrast);
-
+    
 
     fprintf('Save Rasters\n')
     for j = 1:F
