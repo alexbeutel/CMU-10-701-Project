@@ -9,21 +9,22 @@ $window = 3;
 $dir = "../nico/movement1/pgm/";
 
 
-function alexEcho($s) {
+function myexec($s) {
 	echo $s."\n";
+	exec($s);
 }
 
 $cnt = 0;
 for($i = $startFrame; $i < $lastFrame; $i += $step) {
 
 	$sf = $i;
-	$ef = min($lastFrame, $sf + $step * $window);
+	$ef = min($lastFrame, $sf + $step * $window -1);
 
-	exec("./kltrun ".$dir."image -fmt %d -sf ".$sf." -ef ".$ef." -np ".$points);
-	exec("rm -rf ".$dir."window".$cnt);
-	exec("mkdir ".$dir."window".$cnt);
-	exec("mv ".$dir."*.txt ".$dir."window".$cnt."/");  
-	exec("mv ".$dir."*.ppm ".$dir."window".$cnt."/");  
+	myexec("./kltrun ".$dir."image -fmt %d -sf ".$sf." -ef ".$ef." -np ".$points);
+	myexec("rm -rf ".$dir."window".$cnt);
+	myexec("mkdir ".$dir."window".$cnt);
+	myexec("mv ".$dir."*.txt ".$dir."window".$cnt."/");  
+	myexec("mv ".$dir."*.ppm ".$dir."window".$cnt."/");  
 
 	$cnt++;
 }
