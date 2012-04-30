@@ -1,6 +1,11 @@
 function movementBuffer = ConRasterSingleFrame(w,h,X,Y,score)
 
-prior = 0.5;
+alpha0 = 80;
+alpha = 40;
+
+xStamp = ones(alpha0*2+1,1)*(-alpha0:alpha0);
+yStamp = (-alpha0:alpha0)'*ones(1,alpha0*2+1);
+stamp = exp(-(xStamp.^2+yStamp.^2)/alpha);
 
 n = length(X);
 
@@ -8,9 +13,10 @@ buffer = zeros(w,h);
 for k = 1:n,
     x = X(k);
     y = Y(k);
-    xRange = max(1,x-20):min(w,x+20);
-    yRange = max(1,y-20):min(h,y+20);
-    buffer(xRange,yRange) = buffer(xRange,yRange) + 0.01;
+    xRange = max(1-x,-alpha0):min(w-x,alpha0);
+    yRange = max(1-y,-alpha0):min(h-y,alpha0);
+    substamp = stamp(xRange+alpha0,yRange+alpha0);
+    buffer(xRange+x,yRange+y) = buffer(xRange+x,yRange+y) + substamp;
 end
 
 movementBuffer = buffer;
