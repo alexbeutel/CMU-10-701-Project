@@ -28,21 +28,20 @@ rasters = cell(1,lastFrame-startFrame);
 
 cnt = 0;
 for i = startFrame:stepSize:(lastFrame-1)
+    currentWindow = cnt
     
-    fprintf('Window %d at frame %d\n',cnt,i)
-    
+    % Import Traces
     sf = i;
     ef = min(lastFrame, sf + stepSize * windowSize);
     
     
-    fprintf('Import Traces\n')
     W = cvuKltRead(strcat(sprintf(folder, cnt),part2),sf,ef);
     cnt = cnt+1;
+    
 
 %     scoreAndPlot2(sprintf(img,sf), W, N, m);
 
     
-    fprintf('GMM\n')
     % Score
     F = size(W, 1) / 2;
     P = size(W, 2);
@@ -52,13 +51,11 @@ for i = startFrame:stepSize:(lastFrame-1)
     logpdf = pickOutliers(X,Y,N,m);
 
     
-    fprintf('ConRast\n')
     confrast = ConRaster(w,h,X,Y,logpdf);
 
 %     s = struct('sf', sf, 'X', X, 'Y', Y, 'scores', logpdf, 'raster', confrast);
 
-
-    fprintf('Save Rasters\n')
+    
     for j = 1:F
        r = confrast(:,:,j);
        
@@ -73,7 +70,7 @@ for i = startFrame:stepSize:(lastFrame-1)
     
 end
 
-fprintf('Combine and post process\n')
+'combine and post process'
 
 alphas = Combine(rasters);
 

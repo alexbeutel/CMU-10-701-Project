@@ -13,7 +13,7 @@ for k = 1:w,
     end
 end
 
-movementBuffer = buffer';
+movementBuffer = buffer;
 
 end
 
