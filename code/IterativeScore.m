@@ -2,7 +2,7 @@ function IterativeScore()
 
 folder = 'nico/movement1/pgm/window%d/';
 part2 = 'image%d.feat.txt';
-img = 'nico/movement1/pgm/image%d.pgm';
+img = 'nico/movement1/image%d.jpg';
 
 startFrame = 30;
 lastFrame = 79+1;
@@ -51,7 +51,7 @@ end
 
 
 function ProcessColumn(blockList, stepSize,w,h, startFrame,img)
-    numWindows = size(blockList,1)
+    numWindows = size(blockList,1);
     for frame = 1:stepSize
         frameStack = zeros(w,h,numWindows);
         for window = 1:numWindows
@@ -59,11 +59,18 @@ function ProcessColumn(blockList, stepSize,w,h, startFrame,img)
         end
         alpha = Combine(frameStack);
         
+        alpha = alpha - min(min(alpha));
         alpha = alpha / max(max(alpha));
+        
+        sa = sort(reshape(alpha,w,h));
+        thresh = sa( round( 0.5 * length(sa) ) );
+        
+        alpha = (alpha > thresh) + 0.0;
+
         I = imread(sprintf(img,frame+startFrame-1));
-        I = I';
+        alpha = alpha';
         imwrite(I,strcat(sprintf(img,frame+startFrame-1),'.png'),'Alpha',alpha); 
-        imwrite(alpha,strcat(sprintf(img,frame+startFrame-1),'.alpha.png')); 
+%         imwrite(alpha,strcat(sprintf(img,frame+startFrame-1),'.JPG')); 
     end
 end
 
@@ -72,11 +79,20 @@ function confrast = BuildRasters(sf,ef,fn,N,m,w,h)
     W = cvuKltRead(fn,sf,ef);
     fprintf('GMM\n')
     F = size(W,1)/2;
+    P = size(W, 2);
+    
     X = W(1:F,:);
     Y = W(F+(1:F),:);
     logpdf = pickOutliers(X,Y,N,m);
+    
+    slogpdf = sort(logpdf);
+    thresh = slogpdf( round( 0.9 * P ) );
+    X2 = X(:, logpdf < thresh);
+    Y2 = Y(:, logpdf < thresh);
+    logpdf2 = logpdf( logpdf < thresh );
+    
     fprintf('Rasterize\n')
-    confrast = ConRaster(w,h,X,Y,logpdf);
+    confrast = ConRaster(w,h,X2,Y2,logpdf2);
     fprintf('Rasterize Done\n')
 end
 
