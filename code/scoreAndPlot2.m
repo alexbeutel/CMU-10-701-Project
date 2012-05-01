@@ -46,7 +46,15 @@ oldW = oldW - mean(oldW,2)*ones(1,size(oldW,2));
 [~,S,~] = svd(oldW);
 s1 = diag(S);
 
-newW = [X2 Y2];
+
+slogpdf = sort(logpdf);
+thresh = slogpdf( round( 0.1 * P ) );
+
+X4 = X(:, logpdf > thresh);
+Y4 = Y(:, logpdf > thresh);
+logpdf5 = logpdf( logpdf > thresh );
+
+newW = [X4 Y4];
 newW = newW - mean(newW,2)*ones(1,size(newW,2));
 [~,S,~] = svd(newW);
 s2 = diag(S);
@@ -61,11 +69,12 @@ s1(1)/sum(s1(4:end))
 s2(1)/sum(s2(4:end))
 % s3(1)/sum(s3(4:end))
 
-% [s1(1:10) s2(1:10)]
+[s1(1:10) s2(1:10)]
 
 
 
 showPlot(imgfile,X,Y,logpdf);
+showPlot(imgfile,X4,Y4,logpdf5);
 showPlot(imgfile,X2,Y2,logpdf3);
 showPlot(imgfile,X3,Y3,logpdf4);
 % showPlot(imgfile,X2,Y2,logpdf2);
