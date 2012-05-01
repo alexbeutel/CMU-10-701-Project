@@ -1,12 +1,35 @@
 <?php
 
 $points = 2000;
-$startFrame = 30;
-$lastFrame = 80;
 $step = 5;
 $window = 3;
 
-$dir = "../nico/movement1/pgm/";
+
+//$startFrame = 30;
+//$lastFrame = 80;
+//$dir = "../nico/movement1/pgm/";
+
+//$startFrame = 100;
+//$lastFrame = 170;
+//$dir = "../nico/outdoor3/pgm/";
+
+//$startFrame = 40;
+//$lastFrame = 110;
+//$dir = "../nico/movement2/pgm/";
+
+
+//$startFrame = 20;
+//$lastFrame = 70;
+//$dir = "../nico/movement4/pgm/";
+
+
+//$startFrame = 10;
+//$lastFrame = 60;
+//$dir = "../nico/movement5/pgm/";
+
+$startFrame = 110;
+$lastFrame = 155;
+$dir = "../nico/movement4/pgm/";
 
 
 function myexec($s) {

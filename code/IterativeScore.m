@@ -3,9 +3,36 @@ function IterativeScore()
 folder = 'nico/movement1/pgm/window%d/';
 part2 = 'image%d.feat.txt';
 img = 'nico/movement1/image%d.jpg';
-
 startFrame = 30;
 lastFrame = 79+1;
+
+% folder = 'nico/movement2/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/movement2/image%d.jpg';
+% startFrame = 40;
+% lastFrame = 110;
+% stepSize = 3;
+% windowSize = 5;
+
+
+% folder = 'nico/outdoor3/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/outdoor3/image%d.jpg';
+% startFrame = 100;
+% lastFrame = 170;
+
+folder = 'nico/movement4/pgm/window%d/';
+part2 = 'image%d.feat.txt';
+img = 'nico/movement4/image%d.jpg';
+startFrame = 110;
+lastFrame = 155;
+
+% folder = 'nico/movement5/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/movement5/image%d.jpg';
+% startFrame = 10;
+% lastFrame = 60;
+
 stepSize = 5;
 windowSize = 3;
 
@@ -59,13 +86,25 @@ function ProcessColumn(blockList, stepSize,w,h, startFrame,img)
         end
         alpha = Combine(frameStack);
         
-        alpha = alpha - min(min(alpha));
-        alpha = alpha / max(max(alpha));
+%         alpha = alpha - min(min(alpha));
+%         alpha = alpha / max(max(alpha));
         
-        sa = sort(reshape(alpha,w,h));
-        thresh = sa( round( 0.5 * length(sa) ) );
+%         sa = sort(reshape(alpha,1,w*h));
+%         thresh = sa( round( 0.5 * length(sa) ) );
         
-        alpha = (alpha > thresh) + 0.0;
+%         alpha = (alpha > thresh) + 0.0;
+%         alpha = sigmoid( (alpha - thresh) * 50 );
+
+%         alpha(alpha > 0) = alpha * 1000;
+%         alpha(alpha < 0)
+%         figure;
+%         plot(sort(reshape(alpha,1,w*h)))
+        
+%         alpha = sigmoid( (alpha-0.001) * 100 );
+        alpha = (alpha > 0) + 0.0;
+        
+%         G = fspecial('gaussian',[25 25],2);
+%         alpha = imfilter(alpha,G,'same');
 
         I = imread(sprintf(img,frame+startFrame-1));
         alpha = alpha';
@@ -102,5 +141,10 @@ function cellArray = clump(mat3,A,B)
     for group = 1 : A,
         cellArray{group} = mat3(:,:,((group-1)*B+1:group*B));
     end
+end
+
+
+function a = sigmoid(z)
+a = 1.0 ./ (1.0 + exp(-z));
 end
 

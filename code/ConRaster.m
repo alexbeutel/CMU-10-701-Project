@@ -9,7 +9,7 @@ buffers = zeros(w,h,F);
 scores = -scores;
 scores= scores - min(min(scores));
 scores = scores / max(max(scores));
-scores = scores - mean(mean(scores));
+% scores = scores - mean(mean(scores));
 
 % figure;
 % plot(sort(scores));

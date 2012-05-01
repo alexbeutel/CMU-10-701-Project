@@ -1,9 +1,10 @@
 function buffer = ConRasterSingleFrame(w,h,X,Y,score)
 
-alpha1 = 200;
-alpha2 = 200;
-beta1 = 0.5;
-beta2 = 0.5;
+alpha1 = 100;
+alpha2 = 50;
+
+beta1 = 0.0;
+beta2 = 0.0;
 
 stampSize = 8;
 
@@ -16,13 +17,16 @@ for sx = 1:floor(w/stampSize),
         xRange = (sx-1)*stampSize+1:min(sx*stampSize,w);
         yRange = (sy-1)*stampSize+1:min(sy*stampSize,h);
         
-        kappa1 = score;
-        kappa2 = score;
+        ss = sort(score);
+        thresh = ss( round( 0.9 * length(ss) ) );
+
+        kappa1 = sigmoid( (score - thresh) * 100 );
+        kappa2 = 1 - kappa1;
         delta1 = 1-exp(-((X-x).^2+(Y-y).^2)/alpha1);
         delta2 = 1-exp(-((X-x).^2+(Y-y).^2)/alpha2);
-        logprob1 = sum(log(beta1*delta1 + (1-delta1).*kappa1));
-        logprob2 = sum(log(beta2*delta2 + (1-delta2).*kappa2));        
-        buffer(xRange,yRange) = logprob1>logprob2;
+        logprob1 = sum(log(beta1*delta1 + (1-delta1).*kappa1' + 0.00001));
+        logprob2 = sum(log(beta2*delta2 + (1-delta2).*kappa2' + 0.00001));        
+        buffer(xRange,yRange) = logprob1 - logprob2;
     end
 end
 
@@ -50,3 +54,7 @@ end
 % end
 % 
 % movementBuffer = buffer;
+
+function a = sigmoid(z)
+a = 1.0 ./ (1.0 + exp(-z));
+end

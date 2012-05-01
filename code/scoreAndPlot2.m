@@ -1,4 +1,7 @@
-function scoreAndPlot2(imgfile, W, N, m)
+function scoreAndPlot2( sf, ef, N, m, imgfile, fn)
+
+W = cvuKltRead(fn,sf,ef);
+
 F = size(W, 1) / 2;
 P = size(W, 2);
 
@@ -8,16 +11,29 @@ logpdf = pickOutliers(X,Y,N,m);
 
 
 
+
 % Remove outliers
 % figure;
 slogpdf = sort(logpdf);
 % plot(slogpdf);
 
-thresh = slogpdf( round( 0.1 * P ) );
+thresh = slogpdf( round( 0.25 * P ) );
 
 X2 = X(:, logpdf < thresh);
 Y2 = Y(:, logpdf < thresh);
 logpdf2 = logpdf( logpdf < thresh );
+
+
+logpdf3 = pickOutliers(X2,Y2,N,m);
+
+slogpdf = sort(logpdf3);
+thresh = slogpdf( round( 0.1 * length(slogpdf) ) );
+
+X3 = X(:, logpdf < thresh);
+Y3 = Y(:, logpdf < thresh);
+logpdf4 = logpdf( logpdf < thresh );
+
+
 
 % X3 = X(:,1:round(0.9*P));
 % Y3 = Y(:,1:round(0.9*P));
@@ -51,6 +67,8 @@ s2(1)/sum(s2(4:end))
 
 
 showPlot(imgfile,X,Y,logpdf);
+showPlot(imgfile,X2,Y2,logpdf3);
+showPlot(imgfile,X3,Y3,logpdf4);
 % showPlot(imgfile,X2,Y2,logpdf2);
 
 end

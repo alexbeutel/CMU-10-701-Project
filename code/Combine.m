@@ -1,5 +1,6 @@
 function alphas = Combine(rasters)
 
-alphas = mean(rasters,3);
+% alphas = (sum(rasters,3) > 0) + 0.0;
+alphas = sum(rasters,3);
 
 end
