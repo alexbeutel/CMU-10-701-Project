@@ -27,10 +27,14 @@ $window = 3;
 //$lastFrame = 60;
 //$dir = "../nico/movement5/pgm/";
 
-$startFrame = 110;
-$lastFrame = 155;
-$dir = "../nico/movement4/pgm/";
+//$startFrame = 110;
+//$lastFrame = 155;
+//$dir = "../nico/movement4/pgm/";
 
+$startFrame = 325;
+//$lastFrame = 400;
+$lastFrame = 750;
+$dir = "../nico/upton/pgm/";
 
 function myexec($s) {
 	echo $s."\n";

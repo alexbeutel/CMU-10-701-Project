@@ -37,6 +37,7 @@ function W = cvuKltRead(format, sFrame, eFrame)
 % Changes
 %  11/01/2006  First Edition
 for i = sFrame:eFrame
+    fprintf(strcat(format,'\n'),i)
     W(i+1-sFrame, :, :) = load(sprintf(format, i));
 end
 U = W(:, :, 1);

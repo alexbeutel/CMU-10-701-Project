@@ -5,10 +5,9 @@ W = cvuKltRead(fn,sf,ef);
 F = size(W, 1) / 2;
 P = size(W, 2);
 
-X = W(2:F,:);
-Y = W(F+(2:F),:);
+X = W(1:F,:);
+Y = W(F+(1:F),:);
 logpdf = pickOutliers(X,Y,N,m);
-
 
 
 
@@ -17,7 +16,7 @@ logpdf = pickOutliers(X,Y,N,m);
 slogpdf = sort(logpdf);
 % plot(slogpdf);
 
-thresh = slogpdf( round( 0.25 * P ) );
+thresh = slogpdf( round( 0.5 * P ) );
 
 X2 = X(:, logpdf < thresh);
 Y2 = Y(:, logpdf < thresh);
