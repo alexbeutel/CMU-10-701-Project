@@ -33,13 +33,31 @@ lastFrame = 79+1;
 % startFrame = 10;
 % lastFrame = 60;
 
-folder = 'nico/upton/pgm/window%d/';
-part2 = 'image%d.feat.txt';
-img = 'nico/upton/image%d.jpg';
-startFrame = 325;
-lastFrame = 750;
+% folder = 'nico/upton/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/upton/image%d.jpg';
+% startFrame = 325;
+% lastFrame = 750;
 
-stepSize = 5;
+% folder = 'nico/bimbodance/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/bimbodance/image%d.jpg';
+% startFrame = 50;
+% lastFrame = 100;
+
+% folder = 'nico/breakdance/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/breakdance/image%d.jpg';
+% startFrame = 25;
+% lastFrame = 250;
+
+folder = 'nico/rickroll/pgm/window%d/';
+part2 = 'image%d.feat.txt';
+img = 'nico/rickroll/image%d.jpg';
+startFrame = 192;
+lastFrame = 233;
+
+stepSize = 3;
 windowSize = 3;
 
 %do some frame alignment

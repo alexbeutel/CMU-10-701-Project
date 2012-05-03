@@ -17,4 +17,4 @@ do
 done
 ffmpeg -f image2 -r 15 -i .temp/image%d.jpg  video.mp4
 
-#rm -rf .temp/
+rm -rf .temp/
