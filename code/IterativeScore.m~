@@ -1,49 +1,22 @@
 function IterativeScore()
 
-folder = 'nico/movement1/pgm/window%d/';
-part2 = 'image%d.feat.txt';
-img = 'nico/movement1/image%d.jpg';
-startFrame = 30;
-lastFrame = 79+1;
+% folder = 'nico/movement1/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/movement1/image%d.jpg';
+% startFrame = 30;
+% lastFrame = 79+1;
 
 % folder = 'nico/movement2/pgm/window%d/';
 % part2 = 'image%d.feat.txt';
 % img = 'nico/movement2/image%d.jpg';
 % startFrame = 40;
 % lastFrame = 110;
-% stepSize = 3;
-% windowSize = 5;
 
-
-% folder = 'nico/outdoor3/pgm/window%d/';
-% part2 = 'image%d.feat.txt';
-% img = 'nico/outdoor3/image%d.jpg';
-% startFrame = 100;
-% lastFrame = 170;
-
-% folder = 'nico/movement4/pgm/window%d/';
-% part2 = 'image%d.feat.txt';
-% img = 'nico/movement4/image%d.jpg';
-% startFrame = 110;
-% lastFrame = 155;
-
-% folder = 'nico/movement5/pgm/window%d/';
-% part2 = 'image%d.feat.txt';
-% img = 'nico/movement5/image%d.jpg';
-% startFrame = 10;
-% lastFrame = 60;
-
-% folder = 'nico/upton/pgm/window%d/';
-% part2 = 'image%d.feat.txt';
-% img = 'nico/upton/image%d.jpg';
-% startFrame = 325;
-% lastFrame = 750;
-
-folder = 'nico/bimbodance/pgm/window%d/';
+folder = 'nico/outdoor3/pgm/window%d/';
 part2 = 'image%d.feat.txt';
-img = 'nico/bimbodance/image%d.jpg';
-startFrame = 50;
-lastFrame = 750;
+img = 'nico/movement2/image%d.jpg';
+startFrame = 40;
+lastFrame = 110;
 
 stepSize = 5;
 windowSize = 3;
@@ -106,17 +79,6 @@ function ProcessColumn(blockList, stepSize,w,h, startFrame,img)
         
 %         alpha = (alpha > thresh) + 0.0;
 %         alpha = sigmoid( (alpha - thresh) * 50 );
-
-%         alpha(alpha > 0) = alpha * 1000;
-%         alpha(alpha < 0)
-%         figure;
-%         plot(sort(reshape(alpha,1,w*h)))
-        
-%         alpha = sigmoid( (alpha-0.001) * 100 );
-        alpha = (alpha > 0) + 0.0;
-        
-%         G = fspecial('gaussian',[25 25],2);
-%         alpha = imfilter(alpha,G,'same');
 
         I = imread(sprintf(img,frame+startFrame-1));
         alpha = alpha';

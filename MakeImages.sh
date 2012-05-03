@@ -1,7 +1,7 @@
 #!/bin/bash
 vid="$@"
 
-ffmpeg -i $vid -r 15 image%d.jpg
+ffmpeg -i mkdir image%d.jpg
 
 mkdir pgm
 
