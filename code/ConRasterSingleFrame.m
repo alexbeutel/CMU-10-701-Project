@@ -1,12 +1,15 @@
 function buffer = ConRasterSingleFrame(w,h,X,Y,score)
 
-alpha1 = 100;
-alpha2 = 50;
+% alpha1 = 400;
+% alpha2 = 200;
+
+alpha1 = 60;
+alpha2 = 30;
 
 beta1 = 0.0;
 beta2 = 0.0;
 
-stampSize = 8;
+stampSize = 4;
 
 buffer = zeros(w,h);
 
@@ -18,7 +21,7 @@ for sx = 1:floor(w/stampSize),
         yRange = (sy-1)*stampSize+1:min(sy*stampSize,h);
         
         ss = sort(score);
-        thresh = ss( round( 0.9 * length(ss) ) );
+        thresh = ss( round( 0.6 * length(ss) ) );
 
         kappa1 = sigmoid( (score - thresh) * 100 );
         kappa2 = 1 - kappa1;

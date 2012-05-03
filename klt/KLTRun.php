@@ -1,7 +1,7 @@
 <?php
 
 $points = 2000;
-$step = 5;
+$step = 3;
 $window = 3;
 
 
@@ -27,10 +27,26 @@ $window = 3;
 //$lastFrame = 60;
 //$dir = "../nico/movement5/pgm/";
 
-$startFrame = 110;
-$lastFrame = 155;
-$dir = "../nico/movement4/pgm/";
+//$startFrame = 110;
+//$lastFrame = 155;
+//$dir = "../nico/movement4/pgm/";
 
+//$startFrame = 325;
+////$lastFrame = 400;
+//$lastFrame = 750;
+//$dir = "../nico/upton/pgm/";
+//
+//$startFrame = 50;
+//$lastFrame = 100;
+//$dir = "../nico/bimbodance/pgm/";
+
+//$startFrame = 25;
+//$lastFrame = 250;
+//$dir = "../nico/breakdance/pgm/";
+
+$startFrame = 192;
+$lastFrame = 233;
+$dir = "../nico/rickroll/pgm/";
 
 function myexec($s) {
 	echo $s."\n";
