@@ -21,23 +21,17 @@ lastFrame = 79+1;
 % startFrame = 100;
 % lastFrame = 170;
 
-% folder = 'nico/movement4/pgm/window%d/';
-% part2 = 'image%d.feat.txt';
-% img = 'nico/movement4/image%d.jpg';
-% startFrame = 110;
-% lastFrame = 155;
+folder = 'nico/movement4/pgm/window%d/';
+part2 = 'image%d.feat.txt';
+img = 'nico/movement4/image%d.jpg';
+startFrame = 110;
+lastFrame = 155;
 
 % folder = 'nico/movement5/pgm/window%d/';
 % part2 = 'image%d.feat.txt';
 % img = 'nico/movement5/image%d.jpg';
 % startFrame = 10;
 % lastFrame = 60;
-
-folder = 'nico/upton/pgm/window%d/';
-part2 = 'image%d.feat.txt';
-img = 'nico/upton/image%d.jpg';
-startFrame = 325;
-lastFrame = 750;
 
 stepSize = 5;
 windowSize = 3;

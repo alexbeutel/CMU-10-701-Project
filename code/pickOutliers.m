@@ -7,10 +7,6 @@ dX = X(2:F,:) - X(1:(F-1),:);
 dY = Y(2:F,:) - Y(1:(F-1),:);
 dW = [dX' dY'];
 
-% delete columns with all 0s
-dW = dW(:, sum(abs(dW) > 0,1) > 0);
-% size(dW)
-
 logpdf = zeros(P,1);
 
 for i = 1:m,
