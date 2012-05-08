@@ -21,11 +21,11 @@ lastFrame = 79+1;
 % startFrame = 100;
 % lastFrame = 170;
 
-folder = 'nico/movement4/pgm/window%d/';
-part2 = 'image%d.feat.txt';
-img = 'nico/movement4/image%d.jpg';
-startFrame = 110;
-lastFrame = 155;
+% folder = 'nico/movement4/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/movement4/image%d.jpg';
+% startFrame = 110;
+% lastFrame = 155;
 
 % folder = 'nico/movement5/pgm/window%d/';
 % part2 = 'image%d.feat.txt';
@@ -33,7 +33,31 @@ lastFrame = 155;
 % startFrame = 10;
 % lastFrame = 60;
 
-stepSize = 5;
+% folder = 'nico/upton/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/upton/image%d.jpg';
+% startFrame = 325;
+% lastFrame = 750;
+
+% folder = 'nico/bimbodance/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/bimbodance/image%d.jpg';
+% startFrame = 50;
+% lastFrame = 100;
+
+% folder = 'nico/breakdance/pgm/window%d/';
+% part2 = 'image%d.feat.txt';
+% img = 'nico/breakdance/image%d.jpg';
+% startFrame = 25;
+% lastFrame = 250;
+
+folder = 'nico/rickroll/pgm/window%d/';
+part2 = 'image%d.feat.txt';
+img = 'nico/rickroll/image%d.jpg';
+startFrame = 192;
+lastFrame = 233;
+
+stepSize = 3;
 windowSize = 3;
 
 %do some frame alignment
