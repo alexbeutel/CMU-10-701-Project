@@ -20,18 +20,17 @@ Our problem can be formulated as follows: Given a set of traces and the GMM
 probability for each, we look to find the probability that pixel $\pi_j =
 (x_j,y_j)$ at time $t$ is of a moving object in the scene or not.  In order to
 calculate this we first transform a few parameters.  First, we invert and bound
-the range of GMM probabilities to create a \alex{movement} score.  Given ${\bf
+the range of GMM probabilities to create a movement score.  Given ${\bf
 P}$ is the vector of log-probabilities returned by the GMM for a given set of
 traces, we create the following vector of movement scores:
 \begin{align}
 	{\bf s} = - \frac{ {\bf P} - {\rm max}({\bf P}) }{ {\rm min}({\bf P}) }
 \end{align}
-Under this transformation, the scores are bounded to the range 0 to 1 such that
-traces with a high probability of being outliers, and thus movement, are close
-to 1, and those that are not are closer to 0.
+Under this transformation, the scores are monotonically bound to the range $[0,1]$, with
+more likely moving objects (trace differential outliers) closer to 1. 
 
-With this score, we can create a probabilistic model for any given pixel being
-of a moving object or not.  In our model we assume independence among both
+With this score, we can create a probabilistic model for any given pixel representing
+ a moving object or not.  In our model we assume independence among both
 pixels and traces.  Therefore, given score $s_i$ for trace $T_i$, at position
 $(x_{i,t},y_{i,t})$ at time $t$, we claim the following probabilities:
 \begin{align}
