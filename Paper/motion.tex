@@ -61,14 +61,26 @@ than pixels far away.  We also set, based on experimentation, $\alpha_1 =
 2\alpha_2$ so that features that appear be moving having a wider range of
 influence than those that do not.
 
-Because of our independence assumptions, we can sum the logarithms of the
-probabilities calculated on a per pixel basis.  At the of the calculation, if
-$P({\rm pixel}_j = {\it moving}) > P({\rm pixel}_j = {\it static})$ then we
-consider the pixel to be of a moving object, and if not we consider it to be
-static.  Doing this for all pixels in each frame, we can construct a video
-isolating only the moving elements.
+
+Given these probabilities for trace scores conditional on pixel movements, we
+can calculate the general probability of a pixel being of a moving or static
+object, following Bayes rule
+\begin{align}
+	P({\rm pixel}_j = o|{\bf s},W) = \frac{ P({\bf s},W|{\rm pixel}_j = o) P({\rm pixel}_j = o) }{ P({\bf s}, W) },
+\end{align}
+where $o \in \{ {\it moving}, {\it static} \}$.  We make the assumption that we
+have no priors on pixels nor traces.  Also, because under our model we assume
+independence among traces, we can simplify our calculation to the following equation
+\begin{align}
+	\log P({\rm pixel}_j = o|{\bf s},W) = \sum_i \log P(s_i,x_{i,t},y_{i,t}|{\rm pixel}_j = o) \label{eq:logsum}
+\end{align}
+At the of the calculation, if $P({\rm pixel}_j = {\it moving}|{\bf s},W) > P({\rm
+pixel}_j = {\it static}|{\bf s},W)$ then we consider the pixel to be of a moving object,
+and if not we consider it to be static.  Doing this for all pixels in each
+frame, we can construct a video isolating only the moving elements.
 
 \alex{is there a way to weave ``expectation maximization'' into this?}
+\alex{verify equations above - a bit sketchy}
 
 % paragraph Traces to Frames (end)
 
@@ -76,7 +88,7 @@ isolating only the moving elements.
 \label{par:Trace Sets}
 
 One key challenge we found in performing feature tracking was that features
-were often lost if tracked over many sets of frames.  In the case of motion
+were often lost if tracked over many frames.  In the case of motion
 isolation, we do not care so much if any given feature is tracked continuously,
 but rather just if each pixel is more likely to be of a moving or static
 object.
@@ -86,19 +98,23 @@ object.
 \newcommand{\fstep}{ f_s }
 \newcommand{\fwin}{ f_w }
 
-Therefore, to deal with losing features, we break the video into shorter frame
-sets, each frame set denoted by $\fset_k$.  In order to keep some of the
-elements of tracking across the video, we have some overlap between frame sets,
-which we denote as frame step $\fstep$.  Therefore, the first frame of
-$\fset_k$ is $\fstep$ frames after the first frame of $\fset_{k-1}$. Frame
-sets have a window size $\fwin$, such that they contain a total of
-$\fwin\fstep$ frames.
+Therefore, to minimize losing features and for each frame have more tracked
+features, we break the video into shorter sets of frame, each frame set denoted by
+$\fset_k$.  \alex{In order to keep some of the elements of tracking across the video},
+we have some overlap between frame sets, which we denote as frame step
+$\fstep$.  Therefore, the first frame of $\fset_k$ is $\fstep$ frames after the
+first frame of $\fset_{k-1}$. Frame sets have a window size $\fwin$, such that
+they contain a total of $\fwin\fstep$ frames, or alternatively, each frame is
+part of $\fwin$ frame sets.
+(In practice we set $\fwin = 3$ and $\fstep = 3$ or 5.)
 
-Because we assume independence among traces, we can similarly 
-
-
-In practice we set $\fwin = 3$ and $\fstep = 3$ or 5.
-
+Given such a set up, we can run our previously described algorithm, calculating
+the GMM, movement scores, and pixel movement probabilities for each frame set.
+Because we assume independence among traces, we can simply include the
+log-probabilities for each frame set together in the sum in Equation
+\eqref{eq:logsum}, leaving us still with the final comparison $P({\rm pixel}_j
+= {\it moving}|{\bf s},W) > P({\rm pixel}_j = {\it static}|{\bf s},W)$ to
+determine if a pixel is more likely to be of a moving object or not.
 
 % paragraph Trace Sets (end)
 
@@ -108,5 +124,95 @@ In practice we set $\fwin = 3$ and $\fstep = 3$ or 5.
 
 \subsection{Experiments} % (fold)
 \label{sub:Experiments}
+
+
+\paragraph{Setup} % (fold)
+Our implementation followed the algorithm given above fairly closely, and only
+required adjusting parameters slightly depending on some unique video features
+like image resolution.  As there was no simple ground truth, we largely
+evaluated our results based on the quality of the movie produced.  We ran our
+algorithm on a number of different data sets: two videos collected with an Android
+mobile phone of the authors walking around a computer lab and two
+\alex{home-shot}, low quality videos downloaded from YouTube.  For each we
+selected a subset of the video to run our algorithm over.  In each frame,
+pixels that were more likely to be of static objects than moving objects were
+removed, leaving only the ``moving pixels.''  The results are discussed below.
+
+\alex{do we want to put in parameters we chose here, or leave them weaved in
+above: $\gamma$, $\beta$, $\alpha_1$, $\alpha_2$, $\fstep$, $\fwin$.}
+
+% paragraph Setup (end)
+
+\paragraph{Results} % (fold)
+\label{par:Results}
+
+Overall, the algorithm ran as desired.  In each video we generally isolate the
+parts of the scene that are moving.  Figure \ref{fig:alex-walking} gives an
+example of the steps of the process for a video of Alex walking through the
+lab.  We see the video generally captures where he is and removes the
+background.
+
+\begin{figure}[tb]
+	\centering
+	\begin{subfigure}[b]{0.33\textwidth}
+		\centering
+		\includegraphics[width=3in,angle=-90]{figs/alex-image30.jpg}
+		\caption{Single frame before analysis.}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.33\textwidth}
+		\centering
+		\includegraphics[width=3.2in,angle=-90]{figs/gmm-motion.png}
+		\caption{Traces with by GMM probability}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.33\textwidth}
+		\centering
+		\includegraphics[width=3in,angle=-90]{figs/alex30.png}
+		\caption{Frame after motion isolation}
+	\end{subfigure}%
+
+	\caption{Step through of our algorithm running on video we took of Alex walking.}
+	\label{fig:alex-walking}
+\end{figure}
+
+In practice we found that videos of dancing we're excellent examples as the
+motion of the person was {\it very} different from the motion of the
+background.  On YouTube we found two famous videos of dancing: ``Bimbo Dancer''
+and ``Break Dance kick.''  Both videos are relatively low quality with a shaky
+camera, but our algorithm performs well.  In Figure \ref{fig:bimbodance} we see
+a baby dancing on a table, and the algorithm successfully picks out his traces
+as unique from those in the background.
+
+\begin{figure}[tb]
+	\centering
+	\begin{subfigure}[b]{0.33\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{figs/bimbodance-image50.jpg}
+		\caption{Single frame before analysis.}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.33\textwidth}
+		\centering
+		\includegraphics[width=1.2\textwidth]{figs/bimbodance-50.eps}
+		\caption{Traces with by GMM probability}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.33\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{figs/bimbodance-image50.png}
+		\caption{Frame after motion isolation}
+	\end{subfigure}%
+
+	\caption{Step through of our algorithm running on video of a baby dancing.}
+	\label{fig:bimbodance}
+\end{figure}
+
+Complete videos of the output can be found online at \alex{INSERT URL HERE}.
+Overall we were pleased with the result, though we believe fine-tuning the
+parameters of the model could improve the output.  We also believe that
+combining this information with computer vision techniques, such as image
+segmentation, could produce much more robust results.
+
+
+% paragraph Results (end)
+
+
 
 % subsection Experiments (end)
