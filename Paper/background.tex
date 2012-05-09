@@ -6,16 +6,7 @@ One of our applications builds on structure from motion \cite{sfm}, in which the
 \begin{align}
 {\it centroid}({\it project}_A (\{p_1, \ldots, p_P\})) = A[p_1 \ldots p_P]\left[\begin{array}{c}1/P \\ \vdots \\ 1/P\end{array}\right] ={\it project}_A({\it centroid} (\{p_1, \ldots, p_P\}))
 \end{align}
-This implies that we can correct for camera translation by normalizing every frame to the centroid of its points, thereby leaving only the effects of projection onto the camera plane.  Having done this, let $A_1$,$A_2$,\ldots,$A_F$ be the series of $2\times 3$ orthogonal projection matrices through time.  Thus a single 3D point $p$ will take the path $A_1p$, $A_2p$, \ldots, $A_Fp$ in normalized screen space.  Considering this across a whole set of normalized points $p_1$, $p_2$, \ldots, $p_P$, we get the matrix:
-\begin{align}D = 
-\left[ \begin{array}{cccc} 
-A_1p_1 & A_1p_2 & \cdots & A_1p_P \\
-A_2p_1 & A_2p_2 & \cdots & A_2p_P \\
-\vdots & \vdots & \ddots & \vdots \\
-A_Fp_1 & A_Fp_2 & \cdots & A_Fp_P
- \end{array} \right ]
-\end{align}
-This can be factored into two seperate matrices, one corresponding to the direction of the camera and the other to the collection of points:
+This implies that we can correct for camera translation by normalizing every frame to the centroid of its points, thereby leaving only the effects of projection onto the camera plane.  Having done this, let $A_1$,$A_2$,\ldots,$A_F$ be the series of $2\times 3$ orthogonal projection matrices through time.  Thus a single 3D point $p$ will take the path $A_1p$, $A_2p$, \ldots, $A_Fp$ in normalized screen space.  Considering this across a whole set of normalized points $p_1$, $p_2$, \ldots, $p_P$, we get a grand matrix, $D$, of all data.  This can be factored into two seperate matrices, one corresponding to the direction of the camera and the other to the collection of points:
 \begin{align}\label{decomp}
 D=
 \left[ \begin{array}{cccc} 
@@ -26,4 +17,4 @@ A_Fp_1 & A_Fp_2 & \cdots & A_Fp_P
  \end{array} \right ] = 
 \left[ \begin{array}{c} A_1 \\ A_2 \\ \vdots \\ A_F \end{array} \right ] \left[ \begin{array}{cccc} p_1 & p_2 & \cdots & p_P \end{array} \right ]
 \end{align}
-Since the sizes of these factors are $2F \times 3$ and $3 \times P$, we know that the original $D$ matrix, absent any measurement noise, has rank 3.  Of course, there is more than one way to form the decomposition in Equation \ref{decomp}; extra constraints come from restrictions on the projection matrices, and remaining freedom is attributable to freedom of axis choice.  Details of the computation can be found in \cite{sfm}.
+Since the sizes of these factors are $2F \times 3$ and $3 \times P$, we know that the original $D$ matrix, absent any measurement noise, has rank 3.  Of course, there is more than one way to form the decomposition in Equation \ref{decomp}; extra constraints come from restrictions on the projection matrices, and remaining freedom is attributable to freedom of axis choice.  Details of the computation can be found in \cite{sfm}.  For our purposes, the important detail is that the $D$ is rank 3.
