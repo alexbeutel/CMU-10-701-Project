@@ -12,9 +12,16 @@ logpdf = pickOutliers(X,Y,N,m);
 
 
 % Remove outliers
-% figure;
+figure;
 slogpdf = sort(logpdf);
-% plot(slogpdf);
+% x = 0:length(logpdf);
+length(logpdf)
+
+plot(((0:length(slogpdf)-1)/length(slogpdf)),slogpdf);
+
+title('Distribution of Log Probabilities over Traces from an Image Sequence');
+ylabel('Log Probability from GMM');
+xlabel('Trace Percentile');
 
 thresh = slogpdf( round( 0.5 * P ) );
 
@@ -69,14 +76,14 @@ s1(1)/sum(s1(4:end))
 s2(1)/sum(s2(4:end))
 % s3(1)/sum(s3(4:end))
 
-[s1(1:10) s2(1:10)]
+% [s1(1:10) s2(1:10)]
 
 
 
 showPlot(imgfile,X,Y,logpdf);
-showPlot(imgfile,X4,Y4,logpdf5);
-showPlot(imgfile,X2,Y2,logpdf3);
-showPlot(imgfile,X3,Y3,logpdf4);
+% showPlot(imgfile,X4,Y4,logpdf5);
+% showPlot(imgfile,X2,Y2,logpdf3);
+% showPlot(imgfile,X3,Y3,logpdf4);
 % showPlot(imgfile,X2,Y2,logpdf2);
 
 end

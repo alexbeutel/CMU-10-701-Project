@@ -22,8 +22,8 @@ for j=1:size(X, 2)
     %plot(W(2:F, j), W(F+(2:F), j), '-', 'Color', colors(idx(j),:));
     
     
-%     plot(X(:, j), Y(:, j), '-', 'Color', color(j,:), 'LineWidth', 2);
-    plot(X(:, j), Y(:, j), '-', 'Color', 'b', 'LineWidth', 2);
+    plot(X(:, j), Y(:, j), '-', 'Color', color(j,:), 'LineWidth', 2);
+%     plot(X(:, j), Y(:, j), '-', 'Color', 'b', 'LineWidth', 2);
 end
 
 %set(gca,'Position', [0 0 1 1], 'Visible', 'off');
