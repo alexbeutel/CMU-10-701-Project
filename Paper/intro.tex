@@ -1,5 +1,53 @@
 \section{Introduction} % (fold)
 \label{sec:Introduction}
 
-Just some sections listed below following general outlined given on the project
-page, though this may not be the best flow for our project.
+A common challenge in computer vision is accurately tracking features through a
+video.  Many computer vision algorithms build upon these tracked features, so
+accurately tracking the features and understanding the traces through time that
+the features produce is important.  There has been much prior work on feature
+selection (ie SIFT \cite{sift}), which focuses on finding features in an image
+and picking out the ``best'' ones.  Important later work focused on matching
+features between images and after that tracking features through a sequence of
+frames in a video (ie KLT \cite{klt}).  These tools produce a trace of the
+features through space and time.
+Given these traces for each feature, researchers attempt to use them for
+numerous computer vision applications; we focus on two: robust structure from
+motion and robust movement isolation.    
+
+Structure from motion is a common application in which we attempt to recover
+the structure of the objects in a scene based on the motion of a camera shown
+in the feature traces.  (This problem will be discussed in more detail
+later.)  However, bad feature traces \alex{worsen} the results of the structure
+from motion algorithm.
+In particular, when running SIFT and KLT, we found that the algorithms had some
+difficulty with shaky video, such as that produced from waving a mobile phone
+around.  Also, we found that if there was a moving object in a scene we filmed,
+the traces of the moving object also weakened the structure from motion
+algorithm. 
+Therefore, we sought to create a model by which to separate these abnormal
+feature traces from the normal, valid ones, with the ultimate goal of removing
+abnormal traces and improving the structure from motion.  Our key insight,
+which we will explain in more detail later, is that normal traces of static
+objects in a scene generally look similar to one another since their trace is
+almost entirely based on the motion of the camera, where as the bad traces and
+traces of moving objects look very different.  Therefore, we created a model to
+compare trace shapes and detect outliers.
+
+As we produced this model, we found it was excellent at detecting moving
+objects in a scene, regardless of camera motion.  We decided to apply our
+outlier detection model to robustly isolating motion in shaky video.  Given an
+``outlier score'' from our previous model we create a secondary model to
+estimate if a given pixel in a given frame of video is of a moving object or a
+static objects, based on the traces around that pixel and their scores.  Under
+this model, we can then construct a video containing only the moving elements
+in the video and removing background pixels.
+
+In Section \ref{sec:background} we give a brief background on the computer
+vision research that we build upon, such as SIFT, KLT, and structure from
+motion.  In Section \ref{sec:formulation} we more precisely formulate the
+problem and describe our model for outlier detection.  In Section \ref{sec:sfm}
+we describe the application of our model to the problem of robust structure
+from motion, and in Section \ref{sec:motion} we describe the application of our
+model to the problem of robust motion isolation.  For each application we run
+our algorithm on numerous videos, some taken by us with mobile phones and
+others downloaded from YouTube, and analyze the results.

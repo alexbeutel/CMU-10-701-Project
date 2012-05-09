@@ -1,4 +1,5 @@
 \section{Background}
+\label{sec:background}
 
 Our method is built on top of the SIFT \cite{sift} feature selector and KLT \cite{klt} feature matching algorithm.  These were chosen because they meet a minimum level of performance required to illustrate our method, and stable implementations of both are freely available.  The SIFT algorithm is generally desirable because it is invariant to changes in scale and lighting, as well as small changes in viewing angle.  The former properties may not be necessary given our particular application, and so investigation into other features selectors could reasonably improve our implementation.  The only notable property of the KLT matching algorithm is that it only returns features represented in every input frame.  In practice, this is only a problem when the video includes a ``bad frame'' (eg. one frame is extremely blurry) which scrambles all feature tracking.
 
