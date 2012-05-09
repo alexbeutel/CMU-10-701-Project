@@ -3,12 +3,11 @@
 
 As discussed previously, our Gaussian mixture model does an excellent job of
 distinguishing traces of moving objects from traces of static objects caused
-only by the motion of the camera (regardless of the camera motion).  We decided
-to apply this aspect of our model to the task of isolating motion in a scene,
-regardless of unstable video footage.  We first describe the model we use to
-take traces and corresponding GMM probabilities and create a video with only the
-moving elements.  We then describe the experiments and results of our
-implementation.
+only by the motion of the camera.  We decided to apply this aspect of our model
+to the task of isolating motion in a scene, regardless of unstable video
+footage.  We first describe the model we use to take traces and corresponding
+GMM probabilities and create a video with only the moving elements.  We then
+describe the experiments and results of our implementation.
 
 \subsection{Model Application} % (fold)
 \label{sub:Model Application}
@@ -48,7 +47,7 @@ structure for motion problem.  While this could be done dynamically based on an
 analysis of the score distribution, similar to that in Figure
 \ref{fig:logpdfs}, we generally used a threshold at about the 75th percentile
 mark to separate the scores.  (Remember that scores are inverted such that high
-scores are more likely to be of moving objects.)  The parameters $\gamma$ is
+scores are more likely to be of moving objects.)  The parameter $\gamma$ is
 used to push values toward zero or one and leave few values near 0.5; we set
 $\gamma = 100$.
 
@@ -58,7 +57,7 @@ on the probability for that pixel.  The terms $\alpha_1$ and $\alpha_2$
 determine the width of the Gaussian.  With this function we make sure
 that features closer to a pixel have a stronger influence on their probability
 than pixels far away.  Based on experimentation, we set $\alpha_1 =
-2\alpha_2$ so that features that appear be moving having a wider range of
+2\alpha_2$ so that features that appear to be moving having a wider range of
 influence than those that do not.
 
 
@@ -74,7 +73,7 @@ independence among traces, we can simplify our calculation to the following equa
 \begin{align}
 	\log P({\rm pixel}_j = o|{\bf s},W) = \sum_i \log P(s_i,x_{i,t},y_{i,t}|{\rm pixel}_j = o) \label{eq:logsum}
 \end{align}
-At the of the calculation, if $P({\rm pixel}_j = {\it moving}|{\bf s},W) > P({\rm
+At the end of the calculation, if $P({\rm pixel}_j = {\it moving}|{\bf s},W) > P({\rm
 pixel}_j = {\it static}|{\bf s},W)$ then we consider the pixel to be of a moving object,
 and if not we consider it to be static.  Doing this for all pixels in each
 frame, we can construct a video isolating only the moving elements.
@@ -84,9 +83,9 @@ frame, we can construct a video isolating only the moving elements.
 \paragraph{Trace Sets} % (fold)
 \label{par:Trace Sets}
 
-One key challenge we found in performing feature tracking was that features
-were often lost if tracked over many frames.  In the case of motion
-isolation, we do not care so much if any given feature is tracked continuously,
+One key challenge in performing feature tracking is that features
+are often lost if tracked over many frames.  In the case of motion
+isolation, we do not care if any given feature is tracked continuously,
 but rather just if each pixel is more likely to be of a moving or static
 object.
 
@@ -95,7 +94,7 @@ object.
 \newcommand{\fstep}{ f_s }
 \newcommand{\fwin}{ f_w }
 
-\nico{yeah, this paragraph below could use work, but I'm not sure how to fix it specifically }
+%\nico{yeah, this paragraph below could use work, but I'm not sure how to fix it specifically }
 
 Therefore, to minimize feature loss and to otherwise encourage more tracked
 features per frame, we break the video into shorter sets of frame, each frame set denoted by
@@ -145,24 +144,24 @@ removed, leaving only the ``moving pixels.''  The results are discussed below.
 Overall, the algorithm ran as desired.  In each video we generally isolate the
 parts of the scene that are moving.  Figure \ref{fig:alex-walking} gives an
 example of the steps of the process for a video of Alex walking through the
-lab.  We see the video generally captures where he is and removes the
+lab.  The video generally captures where he is and removes the
 background.
 
 \begin{figure}[tb]
 	\centering
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=3in,angle=-90]{figs/alex-image30.jpg}
+		\includegraphics[width=2.9in,angle=-90]{figs/alex-image30.jpg}
 		\caption{Single frame before analysis.}
 	\end{subfigure}%
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=3.2in,angle=-90]{figs/gmm-motion.png}
+		\includegraphics[width=3.1in,angle=-90]{figs/gmm-motion.png}
 		\caption{Traces with by GMM probability}
 	\end{subfigure}%
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=3in,angle=-90]{figs/alex30.png}
+		\includegraphics[width=2.9in,angle=-90]{figs/alex30.png}
 		\caption{Frame after motion isolation}
 	\end{subfigure}%
 
@@ -188,7 +187,7 @@ background.
 	\end{subfigure}%
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=1.2\textwidth]{figs/bimbodance-50.pdf}
+		\includegraphics[width=1.1\textwidth]{figs/bimbodance-50.pdf}
 		\caption{Traces with by GMM probability}
 	\end{subfigure}%
 	\begin{subfigure}[b]{0.33\textwidth}
@@ -201,7 +200,7 @@ background.
 	\label{fig:bimbodance}
 \end{figure}
 
-Complete videos of the output can be found online at \alex{INSERT URL HERE}.
+Complete videos of the output can be found online at \url{http://alexbeutel.com/10701/motion.html}.
 Overall we were pleased with the result, though we believe fine-tuning the
 parameters of the model could improve the output.  We also believe that
 combining this information with computer vision techniques, such as image

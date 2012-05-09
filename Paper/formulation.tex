@@ -19,6 +19,10 @@ frames where each trace comprises two $F\times 1$ vectors,
 x = (x_1, \ldots, x_F)\tr && y = (y_1, \ldots, y_F)\tr
 \end{align*}
 which together trace out the screen-space location of tracked points.  
+We let $W$ denote the set of all $P$ traces in a scene,
+\begin{align*}
+	W = \left\{ \left( \begin{array}{c} x_1 \\ y_1\end{array} \right), \ldots, \left( \begin{array}{c} x_P \\ y_P\end{array} \right) \right\}	
+\end{align*}
 In Figure \ref{fig:traces}, we see an example of overlaying the traces from KLT
 on the first image in a sequence.  As was mentioned previously, our goal is
 detect traces that are outliers.  We define outliers to be traces whose {\it
@@ -45,14 +49,15 @@ can form a $2(F-1)\times 1$ vector, called the {\it trace differential vector}:
 \begin{align*}
 \dot w = \left( \begin{array}{c}\dot x \\ \dot y\end{array} \right)
 \end{align*}
+
 Once we've calculated the trace differential vectors, $\{\dot w_1, \dot w_2,
 \ldots , \dot w_P\}$, for each of $P$ tracked points, we need a model to
 differentiate ``normal'' and outlier traces.
 Noting that it's possible for the set of valid traces to be split into several
 distinct clusters (for example, the different faces of an object or different
 objects in a scene), we decided to use a mixture model.  Because of the
-aforementioned independence assumptions, a naive Bayes Gaussian mixture model (GMM)
-is sufficient.  
+aforementioned independence assumptions, a naive Bayes Gaussian mixture model
+(GMM), with each $\dot{w}_i$ as a data point, is sufficient.  
 Once we have trained our GMM, we can ``score'' each trace differential, giving it a
 probability of being part of any mixture in the GMM.  We use the
 log-probability from the trace differential as an indicator of the likelihood
