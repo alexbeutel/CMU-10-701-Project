@@ -52,12 +52,12 @@ scores are more likely to be of moving objects.)  The parameters $\gamma$ is
 used to push values toward zero or one and leave few values near 0.5; we set
 $\gamma = 100$.
 
-The second term is \alex{of the form of a Gaussian} using the distance between
-the feature and the pixel to determine what influence the feature's score has
-on the probability for the pixel.  The terms $\alpha_1$ and $\alpha_2$
-determine the \alex{width} of the Gaussian.  With this function we make sure
+The second term encodes Gaussian-falloff based on the distance between
+each feature and pixel to determine what influence that feature's score has
+on the probability for that pixel.  The terms $\alpha_1$ and $\alpha_2$
+determine the width of the Gaussian.  With this function we make sure
 that features closer to a pixel have a stronger influence on their probability
-than pixels far away.  We also set, based on experimentation, $\alpha_1 =
+than pixels far away.  Based on experimentation, we set $\alpha_1 =
 2\alpha_2$ so that features that appear be moving having a wider range of
 influence than those that do not.
 
@@ -79,9 +79,6 @@ pixel}_j = {\it static}|{\bf s},W)$ then we consider the pixel to be of a moving
 and if not we consider it to be static.  Doing this for all pixels in each
 frame, we can construct a video isolating only the moving elements.
 
-\alex{is there a way to weave ``expectation maximization'' into this?}
-\alex{verify equations above - a bit sketchy}
-
 % paragraph Traces to Frames (end)
 
 \paragraph{Trace Sets} % (fold)
@@ -98,9 +95,11 @@ object.
 \newcommand{\fstep}{ f_s }
 \newcommand{\fwin}{ f_w }
 
-Therefore, to minimize losing features and for each frame have more tracked
-features, we break the video into shorter sets of frame, each frame set denoted by
-$\fset_k$.  \alex{In order to keep some of the elements of tracking across the video},
+\nico{yeah, this paragraph below could use work, but I'm not sure how to fix it specifically }
+
+Therefore, to minimize feature loss and to otherwise encourage more tracked
+features per frame, we break the video into shorter sets of frame, each frame set denoted by
+$\fset_k$.  In order to keep some of the elements of tracking across the video,
 we have some overlap between frame sets, which we denote as frame step
 $\fstep$.  Therefore, the first frame of $\fset_k$ is $\fstep$ frames after the
 first frame of $\fset_{k-1}$. Frame sets have a window size $\fwin$, such that
@@ -131,15 +130,12 @@ Our implementation followed the algorithm given above fairly closely, and only
 required adjusting parameters slightly depending on some unique video features
 like image resolution.  As there was no simple ground truth, we largely
 evaluated our results based on the quality of the movie produced.  We ran our
-algorithm on a number of different data sets: two videos collected with an Android
+algorithm on a number of different data sets: two videos collected with the Samsung
 mobile phone of the authors walking around a computer lab and two
-\alex{home-shot}, low quality videos downloaded from YouTube.  For each we
-selected a subset of the video to run our algorithm over.  In each frame,
+low quality home-videos downloaded from YouTube.  We ran our algorithm over a 
+selected portion of each video.  In each frame,
 pixels that were more likely to be of static objects than moving objects were
 removed, leaving only the ``moving pixels.''  The results are discussed below.
-
-\alex{do we want to put in parameters we chose here, or leave them weaved in
-above: $\gamma$, $\beta$, $\alpha_1$, $\alpha_2$, $\fstep$, $\fwin$.}
 
 % paragraph Setup (end)
 
@@ -174,8 +170,8 @@ background.
 	\label{fig:alex-walking}
 \end{figure}
 
-In practice we found that videos of dancing we're excellent examples as the
-motion of the person was {\it very} different from the motion of the
+In practice we found that videos of dancing were excellent examples as the
+motion of the person was very distinct from the motion of the
 background.  On YouTube we found two famous videos of dancing: ``Bimbo Dancer''
 \cite{bimbodance} and ``Break Dance Kick'' \cite{breakdance}.  Both videos are
 relatively low quality with a shaky camera, but our algorithm performs well.
@@ -210,7 +206,6 @@ Overall we were pleased with the result, though we believe fine-tuning the
 parameters of the model could improve the output.  We also believe that
 combining this information with computer vision techniques, such as image
 segmentation, could produce much more robust results.
-
 
 
 % YouTube Videos:
